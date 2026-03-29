@@ -1,0 +1,129 @@
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* LEFT */
+.left {
+  flex: 4;
+  background: url('~@/assets/images/login-bg.jpg') no-repeat center;
+  background-size: cover;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 60px;
+  transform: translateY(-100%);
+  color: #333;
+
+  h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #FFA78A;
+  }
+
+  p {
+    max-width: 300px;
+    margin-bottom: 70px;
+  }
+
+  button {
+    padding: 10px 20px;
+    border: 1px solid #ff8c6b;
+    background: transparent;
+    color: #ff8c6b;
+    cursor: pointer;
+  }
+}
+
+/* RIGHT */
+.right {
+  flex: 6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+}
+
+.form {
+  width: 450px;
+  position: relative;
+}
+
+.top {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.back {
+  position: absolute;
+  top: -40px;   
+  right: 0px;
+  border: 1px solid #ff8c6b;
+  background: transparent;
+  padding: 6px 12px;
+  color: #ff8c6b;
+  cursor: pointer;
+}
+
+h2 {
+  text-align: center;
+  font-size: 36px;
+  color: #FFA78A;
+}
+
+.desc {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.google {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background: white;
+  margin-bottom: 10px;
+}
+
+.divider {
+  text-align: center;
+  margin: 15px 0;
+  color: #999;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+}
+
+.forgot {
+  text-align: right;
+  font-size: 14px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.loginBtn {
+  width: 100%;
+  padding: 12px;
+  background: #ff8c6b;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.register {
+  text-align: center;
+  margin-top: 15px;
+
+  span {
+    color: #ff8c6b;
+    cursor: pointer;
+  }
+}
