@@ -16,24 +16,28 @@ export async function register(data: {
   email: string;
   password: string;
 }) {
-  return request('/api/register', {
+  return request('/api/auth/register', {
     method: 'POST',
     data,
   });
 }
 
-
-// gửi OTP
-export async function sendOtp(data: { email: string }) {
-  return request('/api/auth/send-otp', {
+export async function forgotPassword(data: { email: string }) {
+  return request('/api/auth/forgot-password', {
     method: 'POST',
     data,
   });
 }
 
-// verify OTP
-export async function verifyOtp(data: { email: string; otp: string }) {
-  return request('/api/auth/verify-otp', {
+export async function verifyCode(data: { email: string; code: string }) {
+  return request('/api/auth/verify-code', {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function resendCode(data: { email: string }) {
+  return request('/api/auth/resend-code', {
     method: 'POST',
     data,
   });

@@ -1,71 +1,97 @@
 import React, { useState } from 'react';
 import { history } from 'umi';
-import { sendOtp } from '@/services/TaiKhoan/auth.api';
 import { message } from 'antd';
+import { forgotPassword } from '@/services/TaiKhoan/auth.api';
 
-export default () => {
+export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     if (!email) {
-      return message.error('Nhập email');
+      return message.error('Vui lòng nhập email');
     }
 
-    const res = await sendOtp({ email });
+    setLoading(true);
 
-    if (res.success) {
-      message.success(res.message);
+    try {
+      const res = await forgotPassword({ email });
 
-      // chuyển sang trang nhập OTP
-      history.push('/auth/verify-code', { email });
-    } else {
-      message.error(res.message);
+      if (!res.success) {
+        return message.error(res.message);
+      }
+
+      message.success('Đã gửi email xác nhận');
+
+      localStorage.setItem('resetEmail', email);
+
+      //  CHUYỂN SANG ENTER CODE + truyền email
+      history.push(`/auth/verify-code?email=${email}`);
+
+    } catch (err) {
+      console.log("ERROR FULL:", err); 
+      message.error('Lỗi hệ thống');
+    } finally {
+      setLoading(false); 
     }
   };
 
   return (
-    <div className="auth-container">
-      {/* LEFT */}
-      <div className="auth-left">
-        <div className="auth-overlay">
-          <h1>LUNARIA</h1>
-          <p>
-            Mỗi buổi sáng là một khởi đầu mới, khi làn da cần được đánh thức
-            bằng sự dịu dàng.
-          </p>
-          <button>Mua ngay</button>
-        </div>
-      </div>
+    <div className="auth-page">
+      <div className="auth-container">
 
-      {/* RIGHT */}
-      <div className="auth-right">
-        <div className="auth-form">
-          <h2>Quên mật khẩu</h2>
-          <p>Đừng lo lắng, chúng tôi sẽ giúp bạn thiết lập lại mật khẩu</p>
-
-          <label>Email:</label>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <button
-            className="auth-loginBtn"
-            type="button"
-            onClick={handleSubmit}
-          >
-            Đăng ký
-          </button>
-
-          <div className="auth-back">
-            Trở lại?{' '}
-            <span onClick={() => history.push('/auth/login')}>
-              Đăng nhập
-            </span>
+        {/* LEFT */}
+        <div className="auth-left">
+          <div className="auth-overlay">
+            <h1>LUNARIA</h1>
+            <p>
+              Chúng tôi sẽ giúp bạn lấy lại quyền truy cập nhanh chóng.
+            </p>
+            <button>Mua ngay</button>
           </div>
         </div>
+
+        {/* RIGHT */}
+        <div className="auth-right">
+          <div className="auth-form">
+
+            <button
+              className="auth-back"
+              onClick={() => history.push('/auth/login')}
+            >
+              ← Trở lại
+            </button>
+
+            <h2>Quên mật khẩu</h2>
+            <p className="auth-desc">
+              Nhập email để nhận link đặt lại mật khẩu
+            </p>
+
+            <input
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <button
+              className="auth-loginBtn"
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? 'Đang gửi...' : 'Gửi yêu cầu'}
+            </button>
+
+            <p className="auth-register">
+              Quay lại?{' '}
+              <span onClick={() => history.push('/auth/login')}>
+                Đăng nhập
+              </span>
+            </p>
+
+          </div>
+        </div>
+
       </div>
     </div>
   );
-};
+}

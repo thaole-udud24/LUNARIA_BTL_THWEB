@@ -1,91 +1,127 @@
-// import styles from './index.less';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { history } from 'umi';
+import { message } from 'antd';
+import { register as registerApi } from '@/services/TaiKhoan/auth.api';
 
 export default function RegisterPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e: any) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleRegister = async () => {
-    // hiện tại mock đơn giản
+    const { name, email, password } = form;
+
     if (!name || !email || !password) {
-      alert('Vui lòng nhập đầy đủ thông tin');
-      return;
+      return message.error('Vui lòng nhập đầy đủ thông tin');
     }
 
-    // Fake success
-    alert('Đăng ký thành công!');
-    history.push('/auth/login');
+    setLoading(true);
+
+    try {
+      const res = await registerApi({ name, email, password });
+
+      if (!res.success) {
+        return message.error(res.message);
+      }
+
+      message.success(res.message);
+      history.push('/auth/login');
+    } catch (error) {
+      message.error('Lỗi hệ thống');
+    }
+
+    setLoading(false);
   };
 
   return (
-    <div className="auth-container">
-      {/* LEFT */}
-      <div className="auth-left">
-        <div className="auth-overlay">
-          <h1>LUNARIA</h1>
-          <p>
-            Mỗi buổi sáng là một khởi đầu mới, khi làn da cần được đánh thức
-            bằng sự dịu dàng.
-          </p>
-          <button>Mua ngay</button>
-        </div>
-      </div>
+    <div className="auth-page register">
+      <div className="auth-container">
 
-      {/* RIGHT */}
-      <div className="auth-right">
-        <div className="auth-form">
-          <div className="auth-top">
+        {/* LEFT */}
+        <div className="auth-left">
+          <div className="auth-overlay">
+            <h1>LUNARIA</h1>
+            <p>
+              Mỗi buổi sáng là một khởi đầu mới, khi làn da cần được đánh thức
+              bằng sự dịu dàng.
+            </p>
+            <button>Mua ngay</button>
+          </div>
+        </div>
+
+        {/* RIGHT */}
+        <div className="auth-right">
+          <div className="auth-form">
+
             <button
               className="auth-back"
               onClick={() => history.push('/auth/login')}
             >
               ← Trở lại
             </button>
+
+            <h2>TẠO TÀI KHOẢN CỦA BẠN</h2>
+            <p className="auth-desc">
+              Tạo tài khoản mua sắm của bạn
+            </p>
+
+            <button className="auth-google">
+              🔵 Sign up with Google
+            </button>
+
+            <div className="auth-divider">Or use email</div>
+
+            <input
+              name="name"
+              placeholder="Họ và tên"
+              value={form.name}
+              onChange={handleChange}
+            />
+
+            <input
+              name="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={handleChange}
+            />
+
+            <input
+              name="password"
+              type="password"
+              placeholder="Mật khẩu"
+              value={form.password}
+              onChange={handleChange}
+            />
+
+            <button
+              className="auth-loginBtn"
+              onClick={handleRegister}
+              disabled={loading}
+            >
+              {loading ? 'Đang đăng ký...' : 'Đăng ký'}
+            </button>
+
+            <p className="auth-register">
+              Bạn đã có tài khoản?{' '}
+              <span onClick={() => history.push('/auth/login')}>
+                Đăng nhập
+              </span>
+            </p>
+
           </div>
-
-          <h2>Tạo tài khoản của bạn </h2>
-          <p className="auth-desc">
-            Tạo tài khoản mua sắm của bạn
-          </p>
-
-          <button className="auth-google">
-            🔵 Sign up with Google
-          </button>
-
-          <div className="auth-divider">Or use email</div>
-
-          <input
-            placeholder="Họ và tên"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-
-          <input
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <input
-            type="password"
-            placeholder="Mật khẩu"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <button className="auth-registerBtn" onClick={handleRegister}>
-            Đăng ký
-          </button>
-
-          <p className="auth-back">
-            Bạn đã có tài khoản?{' '}
-            <span onClick={() => history.push('/auth/login')}>
-              Đăng nhập
-            </span>
-          </p>
         </div>
+
       </div>
     </div>
   );

@@ -26,35 +26,55 @@ export default {
     message: 'Sai email hoặc mật khẩu',
     });
   },
-  // ✅ gửi OTP
-  'POST /api/auth/send-otp': (req: any, res: any) => {
-    const body = req.body || {};
-    const { email } = body;
+
+  // Register 
+
+  'POST /api/auth/register': (req: any, res: any) => {
+    const { name, email } = req.body;
 
     return res.send({
       success: true,
-      message: 'OTP đã gửi về email',
+      message: 'Đăng ký thành công',
       data: {
+        id: 1,
+        name,
         email,
-        otp: '1234', // fake OTP
       },
     });
   },
 
-  // ✅ verify OTP
-  'POST /api/auth/verify-otp': (req: any, res: any) => {
-    const { otp } = req.body || {};
+  // forgot password 
+  'POST /api/auth/forgot-password': (req: any, res: any) => {
+    const { email } = req.body;
 
-    if (otp === '1234') {
+    return res.send({
+      success: true,
+      message: `Email reset đã gửi tới ${email}`,
+    });
+  },
+
+  // otp 
+  
+  'POST /api/auth/verify-code': (req: any, res: any) => {
+    const { code } = req.body;
+
+    if (code === '1234') {
       return res.send({
         success: true,
-        message: 'OTP hợp lệ',
+        message: 'Xác thực thành công',
       });
     }
 
     return res.send({
       success: false,
-      message: 'OTP không đúng',
+      message: 'Mã không đúng',
+    });
+  },
+
+  'POST /api/auth/resend-code': (req: any, res: any) => {
+    return res.send({
+      success: true,
+      message: 'Đã gửi lại mã',
     });
   },
 

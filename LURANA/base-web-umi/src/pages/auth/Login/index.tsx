@@ -40,9 +40,10 @@ export default function LoginPage() {
   setLoading(false);
   };
   return (
+    <div className="auth-page login"> 
     <div className="auth-container">
       {/* LEFT */}
-      <div className="auth-left">
+      <div className="auth-left" >
         <div className="auth-overlay">
           <h1>LUNARIA</h1>
           <p>
@@ -90,8 +91,9 @@ export default function LoginPage() {
           <p className="auth-register">
             Bạn chưa có tài khoản? <span onClick={() => history.push('/auth/register')}>Tạo tài khoản</span>
           </p>
-        </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 }
