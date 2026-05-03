@@ -22,6 +22,8 @@ export async function register(data: {
   });
 }
 
+// forgot password 
+
 export async function forgotPassword(data: { email: string }) {
   return request('/api/auth/forgot-password', {
     method: 'POST',

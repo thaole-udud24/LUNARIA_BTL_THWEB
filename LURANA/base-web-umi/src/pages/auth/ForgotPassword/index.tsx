@@ -16,9 +16,11 @@ export default function ForgotPasswordPage() {
 
     try {
       const res = await forgotPassword({ email });
+      console.log("API RESPONSE:", res);
 
-      if (!res.success) {
-        return message.error(res.message);
+      if (!res || res.success === false) {
+      message.error(res?.message || 'Có lỗi xảy ra');
+      return;
       }
 
       message.success('Đã gửi email xác nhận');
@@ -26,7 +28,7 @@ export default function ForgotPasswordPage() {
       localStorage.setItem('resetEmail', email);
 
       //  CHUYỂN SANG ENTER CODE + truyền email
-      history.push(`/auth/verify-code?email=${email}`);
+      history.push(`/auth/verify-code?email=${encodeURIComponent(email)}`);
 
     } catch (err) {
       console.log("ERROR FULL:", err); 

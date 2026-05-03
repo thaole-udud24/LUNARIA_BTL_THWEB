@@ -1,9 +1,12 @@
+
 export default {
   // Login 
   'POST /api/auth/login': (req: any, res: any) => {
   const body: any = req.body;
-  const email = body?.email;
-  const password = body?.password;
+  const email = String(body.email || '').trim();
+  const password = String(body.password || '').trim();
+
+  console.log('LOGIN INPUT:', { email, password });
 
   // fake account
   if (email === 'admin@gmail.com' && password === '123456') {
@@ -56,9 +59,26 @@ export default {
   // otp 
   
   'POST /api/auth/verify-code': (req: any, res: any) => {
-    const { code } = req.body;
+    const body = req.body || req.query;
 
-    if (code === '1234') {
+    console.log("VERIFY BODY:", body);
+
+    const { email, code } = body;
+
+    // chuẩn hóa code
+    const cleanCode = Array.isArray(code)
+    ? code.join('')
+    : String(code || '').trim();
+
+    if (!email || !cleanCode) {
+      return res.send({
+        success: false,
+        message: 'Thiếu email hoặc code',
+      });
+    }
+
+
+    if (cleanCode === '1234') {
       return res.send({
         success: true,
         message: 'Xác thực thành công',
@@ -67,7 +87,7 @@ export default {
 
     return res.send({
       success: false,
-      message: 'Mã không đúng',
+      message: `Mã không đúng (${cleanCode})`,
     });
   },
 
@@ -78,11 +98,16 @@ export default {
     });
   },
 
-  // ✅ reset password
-  'POST /api/auth/reset-password': (req: any, res: any) => {
-    const body: any = req.body;
-    const email = body?.email;
-    const password = body?.password;
+  //  reset password
+  'POST /api/auth/reset-password': (req : any, res : any ) => {
+    const { password } = req.body;
+
+    if (!password) {
+      return res.send({
+        success: false,
+        message: 'Thiếu mật khẩu',
+      });
+    }
 
     return res.send({
       success: true,

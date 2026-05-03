@@ -13,20 +13,23 @@ export default function VerifyCode() {
   const inputsRef = useRef<any[]>([]);
 
   const handleChange = (value: string, index: number) => {
-    if (!/^[0-9]?$/.test(value)) return;
+    const val = value.slice(-1);
 
+    if (!/^[0-9]?$/.test(val)) return;
+    
     const newOtp = [...otp];
-    newOtp[index] = value;
+    newOtp[index] = val;
     setOtp(newOtp);
 
     // auto focus next
     if (value && index < 3) {
-      inputsRef.current[index + 1].focus();
+      inputsRef.current[index + 1]?.focus();
     }
   };
 
   const handleSubmit = async () => {
     const code = otp.join('');
+    console.log("CODE FINAL:", code);
 
     if (code.length < 4 || !email) {
       return message.error('Nhập đầy đủ thông tin');
@@ -36,19 +39,25 @@ export default function VerifyCode() {
 
     try {
       const res = await verifyCode({ email, code });
+      console.log("VERIFY RESPONSE:", res);
 
-      if (!res.success) {
-        return message.error(res.message);
+      if (res && res.success === false) {
+        setLoading(false);
+        message.error(res?.message || 'Xác thực thất bại');
+        return;
       }
 
       message.success('Xác thực thành công');
 
       // chuyển sang reset password
-      history.push(`/auth/reset-password?email=${email}&code=${code}`);
+      history.push(
+        `/auth/reset-password?email=${encodeURIComponent(email)}&code=${code}`
+      );
+
+      return; 
     } catch (err) {
       message.error('Lỗi hệ thống');
-    } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 

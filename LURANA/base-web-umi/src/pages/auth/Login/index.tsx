@@ -22,17 +22,27 @@ export default function LoginPage() {
   try {
     const res = await loginApi({ email, password });
 
-    if (!res.success) {
-      return message.error(res.message);
+    if (!res || res.success !== true) {
+      setLoading(false);
+      return message.error(res?.message || 'Đăng nhập thất bại');
     }
 
     //  lưu token (sau này dùng thật)
-    localStorage.setItem('token', res.data.access_token);
+    const token = res?.data?.access_token;
+
+    if (!token) {
+      setLoading(false);
+      return message.error('Không nhận được token');
+    }
+
+    localStorage.setItem('token', token);
 
     message.success(res.message);
 
     //  chuyển trang
     history.push('/');
+
+    return; 
   } catch (error) {
     message.error('Lỗi hệ thống');
   }
