@@ -13,12 +13,14 @@ import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { CreateVoucherDto } from './dto/create-voucher.dto';
+
+const RolesDecorator = Roles as (...roles: string[]) => ClassDecorator;
 import { UpdateVoucherDto } from './dto/update-voucher.dto';
 import { ListVouchersDto } from './dto/list-vouchers.dto';
 
 @Controller('admin/vouchers')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('ADMIN')
+@RolesDecorator('ADMIN')
 export class VouchersAdminController {
   constructor(private readonly vouchersService: VouchersService) {}
 
