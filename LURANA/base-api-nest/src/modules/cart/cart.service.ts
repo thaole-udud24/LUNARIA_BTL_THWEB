@@ -17,7 +17,7 @@ export class CartService {
     const cart = await this.cartModel
       .findOne({ userId: new Types.ObjectId(userId) })
       .populate('items.productId', 'name mainImage variants');
-    
+
     return cart || { userId, items: [] };
   }
 
@@ -26,7 +26,7 @@ export class CartService {
 
     const product = await this.productService.findOne(productId);
     const variant = product.variants.find(v => v.variantName === variantName);
-    
+
     if (!variant) {
       throw new NotFoundException(`Biến thể "${variantName}" không tồn tại`);
     }
@@ -52,10 +52,10 @@ export class CartService {
       }
       cart.items[itemIndex].quantity = newQuantity;
     } else {
-      cart.items.push({ 
-        productId: new Types.ObjectId(productId), 
-        variantName, 
-        quantity 
+      cart.items.push({
+        productId: new Types.ObjectId(productId),
+        variantName,
+        quantity,
       });
     }
 

@@ -22,18 +22,18 @@ export const envSchema = Joi.object({
 
   FRONTEND_URL: Joi.string().default('http://localhost:8000'),
 })
-// 🔥 QUAN TRỌNG
-.unknown(true);
+  // 🔥 QUAN TRỌNG
+  .unknown(true);
 
-export function validateEnv(config: Record<string, any>) {
-  const { error, value } = envSchema.validate(config, {
+export function validateEnv(config: Record<string, unknown>) {
+  const result = envSchema.validate(config, {
     abortEarly: false,
     allowUnknown: true, // 🔥 QUAN TRỌNG
   });
 
-  if (error) {
-    throw new Error(`ENV validation error: ${error.message}`);
+  if (result.error) {
+    throw new Error(`ENV validation error: ${result.error.message}`);
   }
 
-  return value;
+  return result.value as Record<string, unknown>;
 }

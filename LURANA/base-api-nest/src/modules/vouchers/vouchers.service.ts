@@ -10,10 +10,7 @@ import { UpdateVoucherDto } from './dto/update-voucher.dto';
 import { ListVouchersDto } from './dto/list-vouchers.dto';
 import { ApplyVoucherDto } from './dto/apply-voucher.dto';
 import { Voucher, VoucherDocument } from './schemas/voucher.schema';
-import {
-  VoucherUsage,
-  VoucherUsageDocument,
-} from './schemas/voucher-usage.schema';
+
 import {
   VoucherStatus,
   VoucherCustomerScope,
@@ -27,10 +24,7 @@ import {
 @Injectable()
 export class VouchersService {
   constructor(
-    @InjectModel(Voucher.name) private voucherModel: Model<VoucherDocument>,
-    @InjectModel(VoucherUsage.name)
-    private voucherUsageModel: Model<VoucherUsageDocument>,
-  ) {}
+    @InjectModel(Voucher.name) private voucherModel: Model<VoucherDocument>){}
 
   private normalizeCode(code: string) {
     return code?.trim().toUpperCase() ?? '';
