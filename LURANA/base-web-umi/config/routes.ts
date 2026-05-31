@@ -58,6 +58,10 @@ export default [
       path: '/admin/vouchers',
       component: '@/pages/admin/Vouchers',
       },
+      {
+        path: '/admin/settings',
+        component: '@/pages/admin/Settings',
+      },
     ],
   },
 
