@@ -8,6 +8,11 @@ import { Product, ProductSchema } from '../catalog/schemas/product.schema';
 import { Cart, CartSchema } from '../cart/schemas/cart.schema';
 import { QrModule } from 'src/shared/qr/qr.module';
 import { CatalogModule } from '../catalog/catalog.module';
+import { VouchersModule } from '../vouchers/vouchers.module';
+import { VoucherUsage, VoucherUsageSchema } from '../vouchers/schemas/voucher-usage.schema';
+
+// ---> THÊM IMPORT NÀY
+import { PromotionsModule } from '../promotions/promotions.module';
 
 @Module({
   imports: [
@@ -15,9 +20,12 @@ import { CatalogModule } from '../catalog/catalog.module';
       { name: Order.name, schema: OrderSchema },
       { name: Product.name, schema: ProductSchema },
       { name: Cart.name, schema: CartSchema },
+      { name: VoucherUsage.name, schema: VoucherUsageSchema }
     ]),
     QrModule,
     CatalogModule,
+    VouchersModule,
+    PromotionsModule, // ---> THÊM VÀO ĐÂY ĐỂ ORDERS_SERVICE CHECK FLASH SALE
   ],
   controllers: [OrdersController, OrdersAdminController],
   providers: [OrdersService],

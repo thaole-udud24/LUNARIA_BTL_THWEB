@@ -16,6 +16,9 @@ import { CategoriesAdminController } from './categories.admin.controller';
 import { SkinTypesController } from './skin-types.controller';
 import { SkinTypesAdminController } from './skin-types.admin.controller';
 
+// ---> THÊM IMPORT NÀY
+import { PromotionsModule } from '../promotions/promotions.module'; 
+
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -23,6 +26,7 @@ import { SkinTypesAdminController } from './skin-types.admin.controller';
       { name: Category.name, schema: CategorySchema },
       { name: SkinType.name, schema: SkinTypeSchema },
     ]),
+    PromotionsModule, // ---> THÊM VÀO ĐÂY ĐỂ PRODUCTS_SERVICE DÙNG ĐƯỢC
   ],
   controllers: [
     ProductsController,
