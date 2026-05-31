@@ -712,5 +712,6 @@ export const buildVoucherTableRows =
         };
       },
     );
+
   };
 

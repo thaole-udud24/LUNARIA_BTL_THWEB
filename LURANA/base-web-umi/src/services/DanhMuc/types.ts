@@ -44,5 +44,6 @@ export interface UpdateSkinTypePayload {
   description?: string;
 
   active?: boolean;
+
 }
 

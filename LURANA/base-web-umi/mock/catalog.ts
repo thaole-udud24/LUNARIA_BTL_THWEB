@@ -416,10 +416,8 @@ export default {
           item.id !==
           Number(id),
       );
-
     return res.send({
       success: true,
-
       message:
         'Xóa loại da thành công',
     });
